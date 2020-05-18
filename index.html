@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+
+<html> 
+ <head>
+    <title>Mandelbrot and Julia Sets</title> 
+</head>
+ <body>
+    <p align="center"> 
+      <canvas id="canvas1"></canvas> 
+	  <canvas id="canvas2"></canvas> 
+    </p>
+ </body>
+
+ <script src="https://cdn.jsdelivr.net/processing.js/1.4.8/processing.min.js"></script> 
+ 
+ <script>
+var jca;
+var jcb;
+    var sketchProc = function(processingInstance) {
+     with (processingInstance) {
+   size(800, 800);  
+//Based off of Daniel Shiffman's code  
+draw = function() {
+  var ca = map(mouseX, 0, width, -1, 1);
+  var cb = map(mouseY, 0, height, -1, 1);
+  jca = ca;
+  jcb = cb;
+  noStroke();
+  var detail = 3;
+  var w = 8;
+  var h = (w * height) / width;
+
+  var xmin = -w/6;
+  var ymin = -h/6;
+  var maxiterations = 250;
+
+  var xmax = xmin + w;
+  var ymax = ymin + h;
+  var dx = (xmax - xmin) / (width);
+  var dy = (ymax - ymin) / (height);
+  var y = ymin;
+  for (var j = 0; j < height; j+=detail) {
+    var x = xmin;
+    for (var i = 0; i < width; i+=detail) {
+      var a = x;
+      var b = y;
+      var n = 0;
+    while (n < maxiterations) {
+        var aa = a * a;
+        var bb = b * b;
+        var twoab = 2.0 * a * b;
+        a = aa - bb + x;
+        b = twoab + y;
+        if (a*a + b*b > 160) {
+          break;  
+        }
+        n++;
+      }
+      if (n === maxiterations) {
+        fill(0);
+        rect(i, j, detail, detail);
+      } else {
+        fill(sqrt(n*maxiterations));
+        rect(i, j, detail, detail);
+      }
+      x += dx;
+    }
+    y += dy;
+  }
+};
+
+
+    }};
+
+
+    var processingInstance = new Processing(canvas = document.getElementById("canvas1"), sketchProc); 
+	
+	
+    var sketchProc = function(processingInstance) {
+     with (processingInstance) {
+   size(800, 800);  
+//Based off of Daniel Shiffman's code  
+var detail = 3;
+draw = function() {
+  var ca = jca;
+  var cb = jcb;
+colorMode(HSB);
+  noStroke();
+  var w = 9;
+  var h = (w * height) / width;
+  var xmin = -w/6;
+  var ymin = -h/6;
+  var maxiterations = 250;
+
+  var xmax = xmin + w;
+  var ymax = ymin + h;
+  var dx = (xmax - xmin) / (width);
+  var dy = (ymax - ymin) / (height);
+  var y = ymin;
+  for (var j = 0; j < height; j+=detail) {
+    var x = xmin;
+    for (var i = 0; i < width; i+=detail) {
+      var a = x;
+      var b = y;
+      var n = 0;
+    while (n < maxiterations) {
+        var aa = a * a;
+        var bb = b * b;
+        var twoab = 2.0 * a * b;
+        a = aa - bb + ca;
+        b = twoab + cb;
+        if (a*a + b*b > 160) {
+          break;  
+        }
+        n++;
+      }
+      if (n === maxiterations) {
+        fill(0);
+        rect(i, j, detail, detail);
+      } else {
+        fill(sqrt(n*maxiterations), 255, 255);
+        rect(i, j, detail, detail);
+      }
+      x += dx;
+    }
+    y += dy;
+  }
+};
+
+    }};
+
+    var processingInstance = new Processing(document.getElementById("canvas2"), sketchProc); 
+ </script>
+
+</html>
